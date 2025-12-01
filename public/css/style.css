@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --graytext: #9CA3AF;
+    --primegrey: #6B7280;
+    --fontInter: "Inter", sans-serif;
+    --fontManrope: "Manrope", sans-serif;
+    --primeBlack: #111827;
+    --Cyancolor: #164E63;
+    --graylighttext: #D1D5DB;
+}
+
+.graytext {
+    color: var(--graytext);
+}
+
+.graylighttext {
+    color: var(--graylighttext);
+}
+
+.primegrey {
+    color: var(--primegrey);
+}
+
+.primeBlack {
+    color: var(--primeBlack);
+}
+
+.Cyancolor {
+    color: var(--Cyancolor);
+}
+
+.fontInter {
+    font-family: "Inter", sans-serif;
+}
+
+.fontManrope {
+    font-family: var(--fontManrope);
+}
+
+.navbar {
+    background-color: white;
+    color: black;
+}
+
+.navbtn {
+    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+}
+
+.navbar {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.scrolled-nav-top {
+    top: 0.5rem !important;
+}
+
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after {
+    content: '' !important;
+}
+
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
+    content: '' !important;
+}
+
+.swiper-button-next svg,
+.swiper-button-prev svg {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    position: relative !important;
+    margin-top: 32px;
+}
+
+/* contact us page css */
+
+.accordion-content {
+    transition: max-height 0.4s ease, padding 0.3s ease;
+}

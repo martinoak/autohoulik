@@ -1,0 +1,11 @@
+@utility sidebar-item {
+    @apply flex items-center gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-primary-200 dark:text-primary-100 hover:text-white hover:bg-primary-700 dark:hover:bg-primary-950/25;
+
+    & i {
+        @apply text-primary-200 dark:text-primary-100;
+    }
+
+    &.active {
+        @apply bg-primary-700! dark:bg-primary-950/25! text-white!
+    }
+}
