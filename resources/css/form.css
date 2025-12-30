@@ -1,5 +1,14 @@
 input:not([type="radio"], [type="checkbox"]), textarea {
-    @apply block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-primary-500;
+    @apply block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500;
+}
+
+/* NOT readonly/disabled input */
+input:not([readonly]):not([disabled]), textarea:not([readonly]):not([disabled]) {
+    @apply focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600  dark:focus:outline-primary-500;
+}
+
+input[readonly], input[disabled], textarea[readonly], textarea[disabled] {
+    @apply cursor-not-allowed opacity-75;
 }
 
 select {

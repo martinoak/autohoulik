@@ -149,7 +149,7 @@ class FleetController extends Controller
     /**
      * Get vehicle details by ONI ID for API calls
      */
-    public function getByOniId(string $oniId)
+    public function getByOniId(string $oniId): JsonResponse
     {
         $vehicle = Vehicle::where('oni_id', $oniId)->first();
 

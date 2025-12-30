@@ -27,13 +27,19 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.cost-calculator') }}" @class(['group sidebar-item', 'active' => Route::is('admin.cost-calculator')])>
+                            <i class="fa-solid fa-calculator fa-lg group-hover:text-white"></i>
+                            Kalkulačka nákladů
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.oni.index') }}" @class(['group sidebar-item', 'active' => Route::is('admin.oni.index')])>
                             <i class="fa-solid fa-binoculars fa-lg group-hover:text-white"></i>
                             ONI systém
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.sheets') }}"
+                        <a href="{{ route('admin.fleet.sheets') }}"
                            class="group flex items-center gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-primary-200 hover:bg-primary-700 hover:text-white dark:text-primary-100 dark:hover:bg-primary-950/25">
                             <i class="fa-regular fa-money-bill-1 fa-lg text-primary-200 group-hover:text-white dark:text-primary-100"></i>
                             Výkazy hodin

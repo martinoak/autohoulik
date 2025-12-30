@@ -2,7 +2,7 @@
     <div class="flex justify-between mb-8" style="width: unset">
         <div class="inline-flex rounded-lg shadow-2xs">
             @foreach(\App\Enum\VehicleType::cases() as $type)
-                <label class="px-4 py-2 text-sm font-medium cursor-pointer border @if($selectedType === $type->value) text-white bg-blue-800 @else text-gray-800 bg-transparent @endif @if($loop->last) rounded-e-lg @elseif($loop->first) rounded-s-lg border-b border-t @endif border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700">
+                <label class="px-4 py-2 text-sm font-medium cursor-pointer border @if($selectedType === $type->value) text-white bg-primary-800 @else text-gray-800 bg-transparent @endif @if($loop->last) rounded-e-lg @elseif($loop->first) rounded-s-lg border-b border-t @endif border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700">
                     <input type="radio"
                            wire:model.live="selectedType"
                            value="{{ $type->value }}"
