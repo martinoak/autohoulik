@@ -9,6 +9,7 @@ Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
 Route::view('login', 'auth.login')->name('login');
 Route::post('authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/', [Admin\AdminController::class, 'index'])->name('admin.dashboard');
