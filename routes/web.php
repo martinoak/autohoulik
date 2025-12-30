@@ -31,6 +31,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('vehicles/service-book/attachments/{id}', [ServiceBookController::class, 'serveAttachment'])->name('attachment');
 
     Route::resource('oni', OniController::class)->names('admin.oni');
+    Route::get('oni/{oni}/export', [OniController::class, 'export'])->name('admin.oni.export');
+    Route::get('oni/{oni}/map', [OniController::class, 'showMap'])->name('admin.oni.map');
 
     Route::get('sheets', [FleetController::class, 'sheets'])->name('admin.sheets');
 });

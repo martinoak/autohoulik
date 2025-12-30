@@ -170,10 +170,10 @@ class MapService
      */
     private function buildGoogleStaticMapUrl(array $rides, int $width, int $height): ?string
     {
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
+        $apiKey = config('maps.google_api_key');
 
         if (!$apiKey) {
-            \Log::warning('Google Maps API key not found in environment');
+            \Log::warning('Google Maps API key not found in configuration');
             return null;
         }
 

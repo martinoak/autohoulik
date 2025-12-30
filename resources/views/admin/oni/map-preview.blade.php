@@ -1,22 +1,23 @@
 @extends('layout')
 
 @section('head')
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('maps.google_api_key') }}&callback=initMap"></script>
 @endsection
 
-@section('content')
+@section('content'){{----}}
 <div class="px-4 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
+    <div class="sm:flex sm:items-center sm:justify-between">
         <div class="sm:flex-auto">
             <h1 class="heading-title">Detail jízdy {{ DateTime::createFromFormat('Y-m-d', $date)->format('d.m.Y') }} vozidla {{ $vehicle->spz ?? 'Vozidlo '.$id }}</h1>
         </div>
-        <div class="sm:mt-0 sm:ml-16 sm:flex-none space-x-3">
-            <a href="{{ route('oni.show', ['oni' => $id, 'date' => $date]) }}"
-               class="inline-flex items-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500">
+        <div class="sm:mt-0 sm:ml-16 sm:flex space-x-3">
+            <a href="{{ route('admin.oni.show', ['oni' => $id, 'date' => $date]) }}"
+               class="button secondary text-nowrap">
                 ← Zpět na seznam jízd
             </a>
-            <a href="{{ route('oni.export', ['oni' => $id, 'date' => $date]) }}"
-               class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500">
+            <a href="{{ route('admin.oni.export', ['oni' => $id, 'date' => $date]) }}"
+               class="button soft flex items-center"
+            >
                 <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 1H7a2 2 0 00-2 2v16a2 2 0 002 2z"></path>
                 </svg>
@@ -35,7 +36,7 @@
             <div id="map" style="height: 500px; width: 100%; border-radius: 8px; border: 1px solid #d1d5db;"></div>
 
             <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
-                Interaktivní mapa zobrazuje všechny trasy s polylines a číslovanými body startu a konce každé jízdy.
+                Interaktivní mapa zobrazuje všechny trasy s reálnými cestami po silnicích a číslovanými body startu a konce každé jízdy.
             </p>
         </div>
 
@@ -46,25 +47,25 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="text-center">
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ count($rides) }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Celkem jízd</div>
+                    <div class="text-sm text-gray-600 dark:text-primary-400">Celkem jízd</div>
                 </div>
                 <div class="text-center">
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">
                         {{ number_format(collect($rides)->sum('DRIVEDIST'), 1) }} km
                     </div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Celková vzdálenost</div>
+                    <div class="text-sm text-gray-600 dark:text-primary-400">Celková vzdálenost</div>
                 </div>
                 <div class="text-center">
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">
                         {{ number_format(collect($rides)->avg('VEAVG'), 1) }} km/h
                     </div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Prům. rychlost</div>
+                    <div class="text-sm text-gray-600 dark:text-primary-400">Prům. rychlost</div>
                 </div>
                 <div class="text-center">
                     <div class="text-2xl font-bold text-gray-900 dark:text-white">
                         {{ collect($rides)->max('VEMAX') }} km/h
                     </div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Max. rychlost</div>
+                    <div class="text-sm text-gray-600 dark:text-primary-400">Max. rychlost</div>
                 </div>
             </div>
         </div>
@@ -83,6 +84,7 @@
                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Konec</th>
                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Vzdálenost</th>
                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Trasa</th>
+                       {{-- TODO rychlost? --}}
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-white/10">
@@ -90,7 +92,7 @@
                             <tr>
                                 <td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0 dark:text-white">
                                     <div class="flex items-center">
-                                        <div class="w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">
+                                        <div class="w-6 h-6 rounded-full bg-primary-500 text-white text-xs font-bold flex items-center justify-center">
                                             {{ $index + 1 }}
                                         </div>
                                     </div>
@@ -130,8 +132,9 @@
 
 <script>
 let map;
-let polylines = [];
+let directionsRenderers = [];
 let markers = [];
+let directionsService;
 
 // Ride data from PHP
 const rides = @json($rides);
@@ -150,8 +153,12 @@ function initMap() {
         ]
     });
 
+    // Initialize Directions Service
+    directionsService = new google.maps.DirectionsService();
+
     const bounds = new google.maps.LatLngBounds();
 
+    // Process each ride and request directions
     rides.forEach((ride, index) => {
         const startLat = parseFloat(ride.STARTGPSLA?.replace(',', '.') || 0);
         const startLng = parseFloat(ride.STARTGPSLO?.replace(',', '.') || 0);
@@ -166,17 +173,62 @@ function initMap() {
         const stopPos = { lat: stopLat, lng: stopLng };
         const color = '#2563eb';
 
-        // Create polyline for the route
-        const polyline = new google.maps.Polyline({
-            path: [startPos, stopPos],
-            geodesic: true,
-            strokeColor: color,
-            strokeOpacity: 1.0,
-            strokeWeight: 3,
+        // Request directions from Google Maps Directions API
+        const request = {
+            origin: startPos,
+            destination: stopPos,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+
+        // Create a DirectionsRenderer for this route
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+            map: map,
+            suppressMarkers: true, // We'll add custom markers
+            polylineOptions: {
+                strokeColor: color,
+                strokeOpacity: 0.8,
+                strokeWeight: 4
+            }
         });
 
-        polyline.setMap(map);
-        polylines.push(polyline);
+        directionsRenderers.push(directionsRenderer);
+
+        // Request the route
+        directionsService.route(request, (result, status) => {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(result);
+
+                // Extend bounds to include this route
+                const route = result.routes[0];
+                if (route && route.bounds) {
+                    bounds.union(route.bounds);
+
+                    // Fit map after all routes are loaded
+                    if (index === rides.length - 1) {
+                        setTimeout(() => {
+                            map.fitBounds(bounds);
+                            google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+                                if (map.getZoom() > 15) {
+                                    map.setZoom(15);
+                                }
+                            });
+                        }, 500);
+                    }
+                }
+            } else {
+                console.error('Directions request failed for ride', index + 1, 'due to', status);
+
+                // Fallback to straight line if directions fail
+                const fallbackPolyline = new google.maps.Polyline({
+                    path: [startPos, stopPos],
+                    geodesic: true,
+                    strokeColor: '#ff6b6b',
+                    strokeOpacity: 0.6,
+                    strokeWeight: 3,
+                    map: map
+                });
+            }
+        });
 
         // Add start marker
         const startMarker = new google.maps.Marker({
@@ -215,7 +267,7 @@ function initMap() {
 
         markers.push(startMarker, endMarker);
 
-        // Extend bounds
+        // Extend bounds with markers
         bounds.extend(startPos);
         bounds.extend(stopPos);
 
@@ -250,18 +302,10 @@ function initMap() {
         });
     });
 
-    // Fit map to show all routes
+    // Initial bounds fit (will be updated when routes load)
     if (!bounds.isEmpty()) {
         map.fitBounds(bounds);
-
-        // Add some padding
-        google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
-            if (map.getZoom() > 15) {
-                map.setZoom(15);
-            }
-        });
     }
-
 }
 
 // Make initMap available globally

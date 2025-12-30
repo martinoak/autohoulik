@@ -5,14 +5,14 @@
         <div class="px-4 sm:px-0 flex justify-between">
             <h3 class="heading-title">Detail vozidla</h3>
             <div class="space-y-4 flex gap-6">
-                <a href="{{ route('admin.fleet.edit', ['vehicle' => $vehicle->id]) }}" class="black">
+                <a href="{{ route('admin.fleet.edit', ['fleet' => $vehicle->id]) }}" class="button soft">
                     <i class="fa-solid fa-file-pen mr-2"></i> Upravit vozidlo
                 </a>
 
-                <form action="{{ route('admin.fleet.destroy', ['vehicle' => $vehicle->id]) }}" method="post">
+                <form action="{{ route('admin.fleet.destroy', ['fleet' => $vehicle->id]) }}" method="post">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="red" onclick="return confirm('Opravdu smazat vozidlo? Tato akce je nevratná.')">
+                    <button type="submit" class="danger" onclick="return confirm('Opravdu smazat vozidlo? Tato akce je nevratná.')">
                         <i class="fa-solid fa-trash mr-2"></i>
                         Smazat vozidlo
                     </button>
@@ -24,7 +24,8 @@
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="font-medium text-gray-900 dark:text-gray-100">Výrobce</dt>
                     <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
-                        {{ $vehicle->manufacturer }}
+                        <img src="{{ \App\Enum\VehicleManufacturer::getLogo($vehicle->manufacturer) }}" alt="{{ $vehicle->manufacturer }}" class="h-12 dark:hidden">
+                        <img src="{{ \App\Enum\VehicleManufacturer::getLogo($vehicle->manufacturer, 'dark') }}" alt="{{ $vehicle->manufacturer }}" class="h-12 hidden dark:block">
                     </dd>
                 </div>
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -43,7 +44,7 @@
                     <dt class="font-medium text-gray-900 dark:text-gray-100">VIN</dt>
                     <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200 flex items-center font-bold">
                         {{ $vehicle->vin }}
-                        <button type="button" class="ml-2 py-4! primary" onclick="navigator.clipboard.writeText('{{ $vehicle->vin }}')">
+                        <button type="button" class="ml-4 py-2! soft" onclick="navigator.clipboard.writeText('{{ $vehicle->vin }}')">
                             <i class="fa-regular fa-paste fa-lg"></i>
                         </button>
                     </dd>
@@ -60,7 +61,7 @@
                         @if($vehicle->spneu)
                             {{ $vehicle->spneu }}
                         @else
-                            <em class="text-gray-400">--- Nevyplněno ---</em>
+                            <x-placeholder :text="'Nevyplněno'" :height="'h-[75px]'" />
                         @endif
                     </dd>
                 </div>
@@ -70,7 +71,7 @@
                         @if($vehicle->wpneu)
                             {{ $vehicle->wpneu }}
                         @else
-                            <em class="text-gray-400">--- Nevyplněno ---</em>
+                            <x-placeholder :text="'Nevyplněno'" :height="'h-[75px]'" />
                         @endif
                     </dd>
                 </div>
@@ -80,20 +81,24 @@
                     </dt>
                     <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
                         @if($vehicle->oni_id)
-                            <div class="flex justify-between items-center gap-24">
+                            <div class="flex items-center gap-24">
                                 <strong>{{ $vehicle->oni_id }}</strong>
-                                <a href="{{ route('oni.show', ['oni' => $vehicle->oni_id]) }}" class="red font-bold">Získat data z ONI</a>
+                                <a href="{{ route('admin.oni.show', ['oni' => $vehicle->oni_id]) }}"
+                                   class="button soft font-bold"
+                                >
+                                    Získat data z ONI
+                                </a>
                             </div>
                         @else
-                            <em class="text-gray-400">--- Nevyplněno ---</em>
+                            <x-placeholder :text="'Nevyplněno'" :height="'h-[75px]'" />
                         @endif
                     </dd>
                 </div>
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Přílohy</dt>
                     <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0 dark:text-white">
-                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200 dark:divide-white/5 dark:border-white/10">
-                            @if($vehicle->vtp)
+                        @if($vehicle->vtp)
+                            <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200 dark:divide-white/5 dark:border-white/10">
                                 <li class="flex items-center justify-between py-4 pr-5 pl-4 text-sm/6">
                                     <div class="flex w-0 flex-1 items-center">
                                         <i class="fa-solid fa-paperclip fa-lg text-gray-500 dark:text-gray-300"></i>
@@ -110,18 +115,20 @@
                                         </a>
                                     </div>
                                 </li>
-                            @endif
-                        </ul>
+                            </ul>
+                        @else
+                            <x-placeholder :text="'Žádné přílohy'" :height="'h-[75px]'" />
+                        @endif
                     </dd>
                 </div>
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Servisní kniha</dt>
                     <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0 dark:text-white">
-                        <a href="{{ route('service-book.create', ['vehicle' => $vehicle->id]) }}" class="black mb-4">
+                        <a href="{{ route('service-book.create', ['vehicle' => $vehicle->id]) }}" class="button primary mb-4">
                             <i class="fa-solid fa-plus mr-2"></i> Přidat záznam
                         </a>
-                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200 dark:divide-white/5 dark:border-white/10">
-                            @foreach($vehicle->serviceLog()->orderBy('service_date', 'desc')->get() as $log)
+                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200 dark:divide-white/5 dark:border-white/10 mt-4">
+                            @forelse($vehicle->serviceLog()->orderBy('service_date', 'desc')->get() as $log)
                                 <li class="py-4 pr-5 pl-4">
                                     <!-- Top row: Title (left) and Price/KM (right) -->
                                     <div class="flex items-start justify-between">
@@ -173,11 +180,11 @@
 
                                     <!-- Bottom row: Action buttons (right) -->
                                     <div class="flex justify-end gap-2">
-                                        <a href="{{ route('service-book.edit', ['vehicle' => $vehicle->id, 'id' => $log->id]) }}"
+                                        <a href="{{ route('service-book.edit', ['fleet' => $vehicle->id, 'id' => $log->id]) }}"
                                            class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 border border-blue-300 rounded-md hover:bg-blue-50 dark:border-blue-600 dark:hover:bg-blue-900/20">
                                             <i class="fa-solid fa-edit mr-1"></i> Upravit
                                         </a>
-                                        <form method="POST" action="{{ route('service-book.destroy', ['vehicle' => $vehicle->id, 'id' => $log->id]) }}" class="inline">
+                                        <form method="POST" action="{{ route('service-book.destroy', ['fleet' => $vehicle->id, 'id' => $log->id]) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -188,14 +195,16 @@
                                         </form>
                                     </div>
                                 </li>
-                            @endforeach
+                            @empty
+                                <x-placeholder :text="'Žádné záznamy'" :height="'h-[75px]'" />
+                            @endforelse
                         </ul>
                     </dd>
                 </div>
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="font-medium text-gray-900 dark:text-gray-100">Statistika</dt>
                     <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
-                        Připravuje se...
+                        <x-placeholder :text="'Připravuje se...'" :height="'h-[75px]'" />
                     </dd>
                 </div>
             </dl>

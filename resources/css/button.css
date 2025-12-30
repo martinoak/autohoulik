@@ -1,0 +1,27 @@
+a.button, button {
+    @apply rounded-md px-2.5 py-1.5 text-sm text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2;
+
+    &:disabled {
+        @apply cursor-not-allowed opacity-50;
+    }
+
+    &.primary {
+        @apply font-semibold bg-primary-600 hover:bg-primary-500 focus-visible:outline-primary-600 dark:bg-primary-500 dark:shadow-none dark:hover:bg-primary-400 dark:focus-visible:outline-primary-500;
+    }
+
+    &.secondary {
+        @apply bg-white text-gray-900 inset-ring-gray-300 hover:bg-gray-50 dark:bg-white/10 dark:text-white dark:shadow-none dark:inset-ring-white/5 dark:hover:bg-white/20;
+    }
+
+    &.soft {
+        @apply bg-primary-50 text-primary-600 hover:bg-primary-100 dark:bg-primary-500/20 dark:text-primary-400 dark:shadow-none dark:hover:bg-primary-500/30;
+    }
+
+    &.danger {
+        @apply bg-red-600 hover:bg-red-500 focus-visible:outline-red-600 dark:bg-red-500 dark:shadow-none dark:hover:bg-red-400 dark:focus-visible:outline-red-500;
+    }
+
+    &.large {
+        @apply px-3.5 py-2.5 text-base;
+    }
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full @if(! Route::is('homepage')) bg-white dark:bg-gray-900 @endif">
+<html lang="en" class="h-full @if(! Route::is('homepage')) bg-white dark:bg-[#141414] @endif">
 
 <head>
     <meta charset="UTF-8">
@@ -22,6 +22,8 @@
         <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
     @endif
 
+    @yield('head')
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -37,6 +39,8 @@
     @else
         @yield('content')
     @endif
+
+    @yield('scripts')
 </body>
 
 </html>

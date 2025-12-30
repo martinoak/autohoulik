@@ -3,11 +3,11 @@
 @section('content')
     <div class="sm:flex sm:items-center">
         <h1 class="heading-title">Seznam jízd vozidla</h1>
-        <form action="{{ route('oni.show', ['oni' => $vehicle->oni_id]) }}" method="get">
+        <form action="{{ route('admin.oni.show', ['oni' => $vehicle->oni_id]) }}" method="get">
             <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
                 <div class="flex gap-4">
-                    <input type="date" name="start_date" value="{{ request()->get('start_date') }}" class="max-w-lg">
-                    <input type="date" name="end_date" value="{{ request()->get('end_date') }}" class="w-64">
+                    <input type="date" name="start_date" value="{{ request('start_date', date('Y-m-d', strtotime('-1 month'))) }}" class="max-w-lg">
+                    <input type="date" name="end_date" value="{{ request()->get('end_date', date('Y-m-d')) }}" class="w-64">
                     <button type="submit" class="primary">Filtr</button>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                     </div>
                 </div>
 
-                <div class="mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                <div class="mt-4 bg-gray-50 dark:bg-primary-800/20 dark:border dark:border-primary rounded-lg p-4">
                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
                         <!-- Statistics Grid - Mobile Responsive -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:space-x-8 gap-4 lg:gap-0 text-sm">
@@ -147,14 +147,14 @@
 
                         <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-                            <a href="{{ route('oni.map', ['oni' => $id, 'date' => DateTime::createFromFormat('d.m.y', $date)->format('Y-m-d')]) }}"
-                               class="inline-flex items-center justify-center px-3 py-2 border border-blue-300 shadow-sm text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900 dark:border-blue-600 dark:text-blue-200 dark:hover:bg-blue-800">
+                            <a href="{{ route('admin.oni.map', ['oni' => $id, 'date' => DateTime::createFromFormat('d.m.y', $date)->format('Y-m-d')]) }}"
+                               class="inline-flex items-center justify-center px-3 py-2 border border-primary-300 shadow-sm text-sm leading-4 font-medium rounded-md text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:bg-primary-900 dark:border-primary-600 dark:text-primary-200 dark:hover:bg-primary-800">
                                 <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"></path>
                                 </svg>
                                 Mapa
                             </a>
-                            <a href="{{ route('oni.export', ['oni' => $id, 'date' => DateTime::createFromFormat('d.m.y', $date)->format('Y-m-d')]) }}"
+                            <a href="{{ route('admin.oni.export', ['oni' => $id, 'date' => DateTime::createFromFormat('d.m.y', $date)->format('Y-m-d')]) }}"
                                class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">
                                 <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 1H7a2 2 0 00-2 2v16a2 2 0 002 2z"></path>

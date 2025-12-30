@@ -2,6 +2,8 @@
 
 @import "./admin.css";
 @import "./badge.css";
+@import "./button.css";
+@import "./form.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -9,17 +11,19 @@
 @source '../**/*.js';
 
 @theme {
-    --color-primary-50: oklch(97.7% 0.013 236.62);
-    --color-primary-100: oklch(95.1% 0.026 236.824);
-    --color-primary-200: oklch(90.1% 0.058 230.902);
-    --color-primary-300: oklch(82.8% 0.111 230.318);
-    --color-primary-400: oklch(74.6% 0.16 232.661);
-    --color-primary-500: oklch(68.5% 0.169 237.323);
-    --color-primary-600: oklch(58.8% 0.158 241.966);
-    --color-primary-700: oklch(50% 0.134 242.749);
-    --color-primary-800: oklch(44.3% 0.11 240.79);
-    --color-primary-900: oklch(39.1% 0.09 240.876);
-    --color-primary-950: oklch(29.3% 0.066 243.157);
+    --color-primary-50: oklch(0.982 0.018 155.826);
+    --color-primary-100: oklch(0.962 0.044 156.743);
+    --color-primary-200: oklch(0.925 0.084 155.995);
+    --color-primary-300: oklch(0.871 0.15 154.449);
+    --color-primary-400: oklch(0.792 0.209 151.711);
+    --color-primary-500: oklch(0.723 0.219 149.579);
+    --color-primary-600: oklch(0.627 0.194 149.214);
+    --color-primary-700: oklch(0.527 0.154 150.069);
+    --color-primary-800: oklch(0.448 0.119 151.328);
+    --color-primary-900: oklch(0.393 0.095 152.535);
+    --color-primary-950: oklch(0.266 0.065 152.934);
+
+    --color-primary: var(--color-primary-500);
 }
 
 @layer base {
@@ -28,5 +32,15 @@
     }
     button {
         @apply cursor-pointer;
+    }
+}
+
+@layer components {
+    .placeholder {
+        @apply relative overflow-hidden rounded-xl border border-dashed border-gray-400 flex items-center justify-center my-2;
+    }
+
+    .heading-title {
+        @apply text-3xl font-bold text-black dark:text-white;
     }
 }

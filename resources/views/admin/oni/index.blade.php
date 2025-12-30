@@ -20,13 +20,13 @@
                 <h1 class="heading-title">Mapa vozidel</h1>
             </div>
             <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                <a href="{{ url()->current() }}" class="primary">Obnovit mapu</a>
+                <a href="{{ url()->current() }}" class="button soft">Obnovit mapu</a>
             </div>
         </div>
 
         <div class="my-8 flow-root">
             <div class="bg-white dark:bg-zinc-800 shadow-sm ring-1 ring-gray-900/5 dark:ring-white/10 rounded-lg">
-                @if(env('GOOGLE_MAPS_API_KEY'))
+                @if(config('maps.google_api_key'))
                     <div id="map" style="height: 600px; width: 100%; border-radius: 0.5rem;">
                         <div id="map-loading" class="flex items-center justify-center h-full">
                             <div class="text-center">
@@ -117,7 +117,7 @@
                                         @endif
                                     </td>
                                     <td class="py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0">
-                                        <a href="{{ route('oni.show', ['oni' => $vehicle['IDOBJ']]) }}" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
+                                        <a href="{{ route('admin.oni.show', ['oni' => $vehicle['IDOBJ']]) }}" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
                                             Detail vozidla
                                         </a>
                                     </td>
@@ -133,92 +133,108 @@
 @endsection
 
 @section('scripts')
-@if(env('GOOGLE_MAPS_API_KEY'))
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&loading=async&callback=initMap"></script>
+@if(config('maps.google_api_key'))
 <script>
 let map;
 let infoWindow;
 
 function initMap() {
-    const loadingElement = document.getElementById('map-loading');
-    if (loadingElement) {
-        loadingElement.style.display = 'none';
-    }
+    console.log('initMap called');
 
-    // Default center (Czech Republic)
-    const defaultCenter = { lat: 49.75, lng: 15.5 };
-
-    map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 8,
-        center: defaultCenter,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-    });
-
-    infoWindow = new google.maps.InfoWindow();
-
-    // Vehicle positions data from PHP
-    const positionsData = @json($filteredPositions ?? []);
-
-    // Convert object to array if needed (PHP array_filter can return objects)
-    const positions = Array.isArray(positionsData) ? positionsData : Object.values(positionsData);
-
-    if (positions.length === 0) {
-        // Show message when no positions available
-        const noDataDiv = document.createElement('div');
-        noDataDiv.innerHTML = `
-            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                        background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                        text-align: center; z-index: 1000;">
-                <h3 style="margin: 0 0 10px 0; color: #374151;">Žádné pozice vozidel</h3>
-                <p style="margin: 0; color: #6B7280;">Nebyla nalezena žádná data o poloze vozidel.</p>
-            </div>
-        `;
-        document.getElementById('map').appendChild(noDataDiv);
-        return;
-    }
-
-    // Create markers for each vehicle position
-    const bounds = new google.maps.LatLngBounds();
-
-    positions.forEach(position => {
-        if (position.GPSLA && position.GPSLO && position.GPSLA !== 0 && position.GPSLO !== 0) {
-            const latLng = new google.maps.LatLng(position.GPSLA, position.GPSLO);
-
-            const marker = new google.maps.Marker({
-                position: latLng,
-                map: map,
-                title: `Vozidlo ID: ${position.IDOBJ}`,
-                icon: {
-                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M25 4.17C16.31 4.17 10.42 10.69 10.42 18.75c0 10.94 14.58 27.08 14.58 27.08s14.58-16.14 14.58-27.08c0-8.06-6.52-14.58-14.58-14.58z" fill="#DC2626"/>
-                            <circle cx="25" cy="18.75" r="5.21" fill="white"/>
-                        </svg>
-                    `),
-                    scaledSize: new google.maps.Size(50, 50),
-                    anchor: new google.maps.Point(25, 50)
-                }
-            });
-
-            // Add click listener to show vehicle info
-            marker.addListener('click', () => {
-                showVehicleInfo(position, marker);
-            });
-
-            bounds.extend(latLng);
+    try {
+        const loadingElement = document.getElementById('map-loading');
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
         }
-    });
 
-    // Fit map to show all markers
-    if (!bounds.isEmpty()) {
-        map.fitBounds(bounds);
+        // Default center (Czech Republic)
+        const defaultCenter = { lat: 49.75, lng: 15.5 };
 
-        // Ensure minimum zoom level
-        google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
-            if (map.getZoom() > 15) {
-                map.setZoom(15);
+        console.log('Creating map...');
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 8,
+            center: defaultCenter,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+        });
+        console.log('Map created successfully');
+
+        infoWindow = new google.maps.InfoWindow();
+
+        // Vehicle positions data from PHP
+        const positionsData = @json($filteredPositions ?? []);
+        console.log('Positions data:', positionsData);
+
+        // Convert object to array if needed (PHP array_filter can return objects)
+        const positions = Array.isArray(positionsData) ? positionsData : Object.values(positionsData);
+        console.log('Positions array:', positions);
+
+        if (positions.length === 0) {
+            console.log('No positions available');
+            // Show message when no positions available
+            const noDataDiv = document.createElement('div');
+            noDataDiv.innerHTML = `
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                            background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                            text-align: center; z-index: 1000;">
+                    <h3 style="margin: 0 0 10px 0; color: #374151;">Žádné pozice vozidel</h3>
+                    <p style="margin: 0; color: #6B7280;">Nebyla nalezena žádná data o poloze vozidel.</p>
+                </div>
+            `;
+            document.getElementById('map').appendChild(noDataDiv);
+            return;
+        }
+
+        console.log('Creating markers for', positions.length, 'positions');
+        // Create markers for each vehicle position
+        const bounds = new google.maps.LatLngBounds();
+
+        positions.forEach(position => {
+            if (position.GPSLA && position.GPSLO && position.GPSLA !== 0 && position.GPSLO !== 0) {
+                const latLng = new google.maps.LatLng(position.GPSLA, position.GPSLO);
+
+                const marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    title: `Vozidlo ID: ${position.IDOBJ}`,
+                    icon: {
+                        url: `/img/oni/${position.IDOBJ}.png`,
+                        scaledSize: new google.maps.Size(60, 32),
+                        anchor: new google.maps.Point(0, 0)
+                    }
+                });
+
+                // Add click listener to show vehicle info
+                marker.addListener('click', () => {
+                    showVehicleInfo(position, marker);
+                });
+
+                bounds.extend(latLng);
             }
         });
+
+        // Fit map to show all markers
+        if (!bounds.isEmpty()) {
+            map.fitBounds(bounds);
+
+            // Ensure minimum zoom level
+            google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+                if (map.getZoom() > 15) {
+                    map.setZoom(15);
+                }
+            });
+        }
+
+        console.log('Map initialization complete');
+    } catch (error) {
+        console.error('Error in initMap:', error);
+        const loadingElement = document.getElementById('map-loading');
+        if (loadingElement) {
+            loadingElement.innerHTML = `
+                <div class="text-center">
+                    <p class="text-sm text-red-600">Chyba při načítání mapy: ${error.message}</p>
+                </div>
+            `;
+        }
     }
 }
 
@@ -274,6 +290,20 @@ async function showVehicleInfo(position, marker) {
         infoWindow.open(map, marker);
     }
 }
+
+// Add error handling
+window.gm_authFailure = function() {
+    console.error('Google Maps authentication failed');
+    const loadingElement = document.getElementById('map-loading');
+    if (loadingElement) {
+        loadingElement.innerHTML = `
+            <div class="text-center">
+                <p class="text-sm text-red-600">Chyba autentizace Google Maps API</p>
+            </div>
+        `;
+    }
+};
 </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('maps.google_api_key') }}&callback=initMap"></script>
 @endif
 @endsection
