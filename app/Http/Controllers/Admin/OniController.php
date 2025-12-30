@@ -15,7 +15,7 @@ use Illuminate\View\View;
 
 class OniController extends Controller
 {
-    private OniSystemService $oni;
+    protected OniSystemService $oni;
 
     private MapService $mapService;
 

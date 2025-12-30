@@ -50,7 +50,7 @@
                     </li>
                 </ul>
             </li>
-            <li>
+            {{--<li>
                 <div class="text-xs/6 font-semibold text-primary-200 dark:text-primary-100">Řidiči</div>
                 <ul role="list" class="-mx-2 mt-2 space-y-1">
                     <li>
@@ -73,12 +73,28 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li>--}}
             <li class="-mx-6 mt-auto">
-                <a href="#" class="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-white hover:bg-primary-700 dark:hover:bg-primary-950/25">
+                <div class="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-white">
                     <i class="fa-regular fa-id-badge fa-lg"></i>
-                    <span aria-hidden="true">{{ Auth::user()->name }}</span>
-                </a>
+                    <span aria-hidden="true" class="flex-1">{{ Auth::user()->name }}</span>
+
+                    <!-- Theme Toggle Button -->
+                    <button type="button" id="moonButton" onclick="document.documentElement.classList.add('dark'); localStorage.theme = 'dark';" class="w-8 h-8 flex items-center justify-center bg-primary-700 hover:bg-primary-800 rounded-md transition-colors cursor-pointer dark:hidden" title="Switch to dark mode">
+                        <i class="fa-solid fa-moon text-white pointer-events-none"></i>
+                    </button>
+                    <button type="button" id="sunButton" onclick="document.documentElement.classList.remove('dark'); localStorage.theme = 'light';" class="w-8 h-8 items-center justify-center bg-primary-700 hover:bg-primary-800 rounded-md transition-colors cursor-pointer hidden dark:flex" title="Switch to light mode">
+                        <i class="fa-solid fa-sun text-white pointer-events-none"></i>
+                    </button>
+
+                    <!-- Logout Button -->
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-primary-200 hover:text-white dark:text-primary-100 transition-colors" title="Logout">
+                            <i class="fa-solid fa-right-from-bracket fa-lg"></i>
+                        </button>
+                    </form>
+                </div>
             </li>
         </ul>
     </nav>

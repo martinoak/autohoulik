@@ -9,6 +9,15 @@
 
     <link rel="icon" href="{{ asset('img/logo.png') }}">
 
+    <!-- Theme detection script - inline to avoid FOUC -->
+    <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        document.documentElement.classList.toggle(
+            'dark',
+            localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        );
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
