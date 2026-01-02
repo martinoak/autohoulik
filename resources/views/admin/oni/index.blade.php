@@ -198,7 +198,7 @@ function initMap() {
                     title: `Vozidlo ID: ${position.IDOBJ}`,
                     icon: {
                         url: `/img/oni/${position.IDOBJ}.png`,
-                        scaledSize: new google.maps.Size(60, 32),
+                        scaledSize: new google.maps.Size(69, 27),
                         anchor: new google.maps.Point(0, 0)
                     }
                 });

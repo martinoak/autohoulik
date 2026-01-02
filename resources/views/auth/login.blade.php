@@ -5,9 +5,9 @@
     <div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div class="mx-auto w-full max-w-sm lg:w-96">
             <div>
-                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=yellow&shade=600"
+                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=green&shade=600"
                      alt="Your Company" class="h-10 w-auto dark:hidden"/>
-                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=yellow&shade=500"
+                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=green&shade=500"
                      alt="Your Company" class="h-10 w-auto not-dark:hidden"/>
                 <h2 class="mt-8 text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white">
                     Přihlášení do administrace
@@ -25,7 +25,7 @@
                             </label>
                             <div class="mt-2">
                                 <input id="username" type="text" name="username" required autocomplete="username"
-                                       class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-yellow-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-yellow-500"/>
+                                       class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-primary-500"/>
                             </div>
                         </div>
 
@@ -36,14 +36,14 @@
                             <div class="mt-2">
                                 <input id="password" type="password" name="password" required
                                        autocomplete="current-password"
-                                       class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-yellow-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-yellow-500"/>
+                                       class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-primary-500"/>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-end">
                             <div class="text-sm/6">
                                 <a href="#"
-                                   class="font-semibold text-yellow-600 hover:text-yellow-500 dark:text-yellow-400 dark:hover:text-yellow-300">
+                                   class="font-semibold text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300">
                                     Zapomenuté heslo?
                                 </a>
                             </div>
@@ -51,7 +51,7 @@
 
                         <div>
                             <button type="submit"
-                                    class="flex w-full justify-center rounded-md bg-yellow-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-yellow-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600 dark:bg-yellow-500 dark:shadow-none dark:hover:bg-yellow-400 dark:focus-visible:outline-yellow-500">
+                                    class="flex w-full justify-center rounded-md bg-primary-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-primary-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:bg-primary-500 dark:shadow-none dark:hover:bg-primary-400 dark:focus-visible:outline-primary-500">
                                 Přihlásit se
                             </button>
                         </div>
@@ -64,7 +64,7 @@
                             <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
                         </div>
                         <div class="relative flex justify-center text-sm/6 font-medium">
-                            <span class="bg-white px-6 text-gray-900 dark:bg-gray-900 dark:text-gray-300">nebo přihlásit přes</span>
+                            <span class="bg-white px-6 text-gray-900 dark:bg-[#141414] dark:text-gray-300">nebo přihlásit přes</span>
                         </div>
                     </div>
 
