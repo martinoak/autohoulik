@@ -9,6 +9,7 @@ class HomepageController extends Controller
 {
     public function index(): View
     {
-        return view('home');
+        return view('maintenance');
+        // return view('home');
     }
 }
