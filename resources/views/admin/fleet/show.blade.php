@@ -75,25 +75,27 @@
                         @endif
                     </dd>
                 </div>
-                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt class="font-medium text-gray-900 dark:text-gray-100">
-                        <img src="{{ asset('images/oni.png') }}" alt="ONI system ID" class="h-6 inline-block">
-                    </dt>
-                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
-                        @if($vehicle->oni_id)
-                            <div class="flex items-center gap-24">
-                                <strong>{{ $vehicle->oni_id }}</strong>
-                                <a href="{{ route('admin.oni.show', ['oni' => $vehicle->oni_id]) }}"
-                                   class="button soft font-bold"
-                                >
-                                    Získat data z ONI
-                                </a>
-                            </div>
-                        @else
-                            <x-placeholder :text="'Nevyplněno'" :height="'h-[75px]'" />
-                        @endif
-                    </dd>
-                </div>
+                @if($vehicle->oni_id || $vehicle->type === \App\Enum\VehicleType::TRUCK->value)
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt class="font-medium text-gray-900 dark:text-gray-100">
+                            <img src="{{ asset('images/oni.png') }}" alt="ONI system ID" class="h-6 inline-block">
+                        </dt>
+                        <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
+                            @if($vehicle->oni_id)
+                                <div class="flex items-center gap-24">
+                                    <strong>{{ $vehicle->oni_id }}</strong>
+                                    <a href="{{ route('admin.oni.show', ['oni' => $vehicle->oni_id]) }}"
+                                       class="button soft font-bold"
+                                    >
+                                        Získat data z ONI
+                                    </a>
+                                </div>
+                            @else
+                                <x-placeholder :text="'Nevyplněno'" :height="'h-[75px]'" />
+                            @endif
+                        </dd>
+                    </div>
+                @endif
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Přílohy</dt>
                     <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0 dark:text-white">
@@ -179,9 +181,9 @@
                                     @endif
 
                                     <!-- Bottom row: Action buttons (right) -->
-                                    <div class="flex justify-end gap-2">
+                                    <div class="flex justify-end gap-2 mt-4">
                                         <a href="{{ route('service-book.edit', ['vehicle' => $vehicle->id, 'id' => $log->id]) }}"
-                                           class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 border border-blue-300 rounded-md hover:bg-blue-50 dark:border-blue-600 dark:hover:bg-blue-900/20">
+                                           class="button soft">
                                             <i class="fa-solid fa-edit mr-1"></i> Upravit
                                         </a>
                                         <form method="POST" action="{{ route('service-book.destroy', ['vehicle' => $vehicle->id, 'id' => $log->id]) }}" class="inline">
@@ -189,7 +191,7 @@
                                             @method('DELETE')
                                             <button type="submit"
                                                     onclick="return confirm('Opravdu chcete smazat tento servisní záznam?')"
-                                                    class="inline-flex items-center px-3 py-1 text-sm font-medium text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 border border-red-300 rounded-md hover:bg-red-50 dark:border-red-600 dark:hover:bg-red-900/20">
+                                                    class="button danger">
                                                 <i class="fa-solid fa-trash mr-1"></i> Smazat
                                             </button>
                                         </form>
