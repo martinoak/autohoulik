@@ -1,7 +1,9 @@
-<div>
+<div class="space-y-2">
     @for($i = 1; $i <= $counter; $i++)
         <div class="form-row">
-            <label for="attachments_{{ $i }}">Příloha k záznamu</label>
+            <label for="attachments_{{ $i }}" class="block text-sm/6 font-medium text-gray-900 dark:text-white">
+                Příloha k záznamu
+            </label>
             <div class="mt-2 sm:col-span-2 sm:mt-0 max-w-2xl">
                 <div class="flex items-center space-x-4">
                     <input id="attachments_{{ $i }}"
@@ -24,7 +26,7 @@
         @if($i === $counter)
             <div class="form-row">
                 <div></div>
-                <div class="mt-2 sm:col-span-2 sm:mt-0">
+                <div class="mt-2 sm:col-span-2">
                     <button type="button" wire:click="addAttachment" class="primary">
                         <i class="fa-solid fa-plus fa-lg icon"></i> Přidat další přílohu
                     </button>
