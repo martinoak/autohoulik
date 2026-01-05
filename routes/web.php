@@ -37,4 +37,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('sheets', [Admin\SheetsController::class, 'sheets'])->name('admin.fleet.sheets');
     Route::get('sheets/export', [Admin\SheetsController::class, 'exportSheets'])->name('admin.fleet.sheets.export');
+
+    Route::resource('users', Admin\UserController::class)->names('admin.users');
 });

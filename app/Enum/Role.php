@@ -17,6 +17,15 @@ enum Role: string
         };
     }
 
+    public function badgeColor(): string
+    {
+        return match ($this) {
+            self::ADMIN => 'badge-red',
+            self::USER => 'badge-green',
+            self::DRIVER => 'badge-yellow',
+        };
+    }
+
     public static function toArray(): array
     {
         return array_column(self::cases(), 'value');

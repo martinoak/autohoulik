@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-    <form method="post" action="{{ route('service-book.store', ['fleet' => $vehicle->id]) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('service-book.store', ['vehicle' => $vehicle->id]) }}" enctype="multipart/form-data">
         @csrf
 
         <input type="hidden" name="api-token" value="{{ auth()->user()->api_token }}">

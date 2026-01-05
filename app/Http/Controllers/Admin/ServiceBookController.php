@@ -100,7 +100,7 @@ class ServiceBookController extends Controller
             }
         }
 
-        return to_route('service-book.index', ['fleet' => $vehicleId])->with('success', 'Servisní záznam byl úspěšně aktualizován.');
+        return to_route('service-book.index', ['vehicle' => $vehicleId])->with('success', 'Servisní záznam byl úspěšně aktualizován.');
     }
 
     /**
@@ -110,7 +110,7 @@ class ServiceBookController extends Controller
     {
         ServiceLog::where('id', $id)->delete();
 
-        return to_route('service-book.index', ['fleet' => $vehicle])->with('success', 'Záznam byl smazán.');
+        return to_route('service-book.index', ['vehicle' => $vehicle])->with('success', 'Záznam byl smazán.');
     }
 
     public function serveAttachment(string $id): BinaryFileResponse

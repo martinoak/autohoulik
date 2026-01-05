@@ -180,11 +180,11 @@
 
                                     <!-- Bottom row: Action buttons (right) -->
                                     <div class="flex justify-end gap-2">
-                                        <a href="{{ route('service-book.edit', ['fleet' => $vehicle->id, 'id' => $log->id]) }}"
+                                        <a href="{{ route('service-book.edit', ['vehicle' => $vehicle->id, 'id' => $log->id]) }}"
                                            class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 border border-blue-300 rounded-md hover:bg-blue-50 dark:border-blue-600 dark:hover:bg-blue-900/20">
                                             <i class="fa-solid fa-edit mr-1"></i> Upravit
                                         </a>
-                                        <form method="POST" action="{{ route('service-book.destroy', ['fleet' => $vehicle->id, 'id' => $log->id]) }}" class="inline">
+                                        <form method="POST" action="{{ route('service-book.destroy', ['vehicle' => $vehicle->id, 'id' => $log->id]) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
