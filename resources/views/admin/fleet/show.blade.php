@@ -55,13 +55,144 @@
                         <x-license-plate :spz="$vehicle->spz" size="md" />
                     </dd>
                 </div>
+{{--                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="font-medium text-gray-900 dark:text-gray-100">Vlastník</dt>
+                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
+                        {{ $vehicle->driver }}
+                    </dd>
+                </div>--}}
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="font-medium text-gray-900 dark:text-gray-100">Barva</dt>
+                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
+                        <div class="h-6 w-64 rounded-full border border-gray-200 dark:border-white/10" style="background-color: {{ $vehicle->color }}"></div>
+                    </dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 @if($vehicle->stk && $vehicle->stk->diffInDays(now()) > -14) bg-red-100 dark:bg-red-600/60 @endif">
+                    <dt class="font-medium text-gray-900 dark:text-gray-100">STK</dt>
+                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
+                        @if($vehicle->stk)
+                            <div class="flex items-center gap-2">
+                                <span>{{ $vehicle->stk->format('j.n.Y') }}</span>
+                                @php
+                                    $daysLeft = -$vehicle->stk->diffInDays(now());
+                                    $isRed = $vehicle->stk->diffInDays(now()) > -14;
+                                    $isOrange = $vehicle->stk->diffInDays(now()) > -60 && !$isRed;
+                                @endphp
+                                <x-badge
+                                    :red="$isRed"
+                                    :orange="$isOrange"
+                                    :gray="$daysLeft > 60"
+                                    :text="round($daysLeft) . ' dní'"
+                                />
+                            </div>
+                        @else
+                            <span class="text-sm text-gray-400 dark:text-gray-500 italic">Nevyplněno</span>
+                        @endif
+                    </dd>
+                </div>
+                @if($vehicle->type === \App\Enum\VehicleType::TRUCK->value)
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 @if($vehicle->tachograph && $vehicle->tachograph->diffInDays(now()) > -14) bg-red-100 dark:bg-red-600/60 @endif">
+                        <dt class="font-medium text-gray-900 dark:text-gray-100">Tachograf</dt>
+                        <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
+                            @if($vehicle->tachograph)
+                                <div class="flex items-center gap-2">
+                                    <span>{{ $vehicle->tachograph->format('j.n.Y') }}</span>
+                                    @php
+                                        $daysLeft = -$vehicle->tachograph->diffInDays(now());
+                                        $isRed = $vehicle->tachograph->diffInDays(now()) > -14;
+                                        $isOrange = $vehicle->tachograph->diffInDays(now()) > -60 && !$isRed;
+                                    @endphp
+                                    <x-badge
+                                        :red="$isRed"
+                                        :orange="$isOrange"
+                                        :gray="$daysLeft > 60"
+                                        :text="round($daysLeft) . ' dní'"
+                                    />
+                                </div>
+                            @else
+                                <span class="text-sm text-gray-400 dark:text-gray-500 italic">Nevyplněno</span>
+                            @endif
+                        </dd>
+                    </div>
+                @endif
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 @if($vehicle->oilChange && $vehicle->oilChange->diffInDays(now()) > -14) bg-red-100 dark:bg-red-600/60 @endif">
+                    <dt class="font-medium text-gray-900 dark:text-gray-100">Výměna oleje</dt>
+                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
+                        @if($vehicle->oilChange)
+                            <div class="flex items-center gap-2">
+                                <span>{{ $vehicle->oilChange->format('j.n.Y') }}</span>
+                                @php
+                                    $daysLeft = -$vehicle->oilChange->diffInDays(now());
+                                    $isRed = $vehicle->oilChange->diffInDays(now()) > -14;
+                                    $isOrange = $vehicle->oilChange->diffInDays(now()) > -60 && !$isRed;
+                                @endphp
+                                <x-badge
+                                    :red="$isRed"
+                                    :orange="$isOrange"
+                                    :gray="$daysLeft > 60"
+                                    :text="round($daysLeft) . ' dní'"
+                                />
+                            </div>
+                        @else
+                            <span class="text-sm text-gray-400 dark:text-gray-500 italic">Nevyplněno</span>
+                        @endif
+                    </dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 @if($vehicle->insurance && $vehicle->insurance->diffInDays(now()) > -14) bg-red-100 dark:bg-red-600/60 @endif">
+                    <dt class="font-medium text-gray-900 dark:text-gray-100">Povinné ručení</dt>
+                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
+                        @if($vehicle->insurance)
+                            <div class="flex items-center gap-2">
+                                <span>{{ $vehicle->insurance->format('j.n.Y') }}</span>
+                                @php
+                                    $daysLeft = -$vehicle->insurance->diffInDays(now());
+                                    $isRed = $vehicle->insurance->diffInDays(now()) > -14;
+                                    $isOrange = $vehicle->insurance->diffInDays(now()) > -60 && !$isRed;
+                                @endphp
+                                <x-badge
+                                    :red="$isRed"
+                                    :orange="$isOrange"
+                                    :gray="$daysLeft > 60"
+                                    :text="$daysLeft < 0 ? 'PROŠLÉ!!!' : round($daysLeft) . ' dní'"
+                                />
+                            </div>
+                        @else
+                            <span class="text-sm text-gray-400 dark:text-gray-500 italic">Nevyplněno</span>
+                        @endif
+                    </dd>
+                </div>
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="font-medium text-gray-900 dark:text-gray-100">Letní pneu</dt>
                     <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
                         @if($vehicle->spneu)
-                            {{ $vehicle->spneu }}
+                            <div class="flex items-center gap-2">
+                                @php
+                                    // Calculate seasons: current year - tire year + 1
+                                    $currentYear = now()->year;
+                                    $seasons = $currentYear - $vehicle->spneu + 1;
+                                @endphp
+                                <span>{{ $vehicle->spneu }}</span>
+                                @php
+                                    $isGreen = $seasons >= 0 && $seasons <= 5;
+                                    $isYellow = $seasons > 5 && $seasons <= 7;
+                                    $isRed = $seasons >= 8;
+                                @endphp
+                                @if($isGreen)
+                                    <span class="badge badge-green">
+                                        {{ $seasons }}. sezóna
+                                    </span>
+                                @elseif($isYellow)
+                                    <span class="badge badge-yellow">
+                                        {{ $seasons }}. sezóna
+                                    </span>
+                                @else
+                                    <span class="badge badge-red">
+                                        {{ $seasons }}. sezóna
+                                    </span>
+                                @endif
+                            </div>
                         @else
-                            <x-placeholder :text="'Nevyplněno'" :height="'h-[75px]'" />
+                            <span class="text-sm text-gray-400 dark:text-gray-500 italic">Nevyplněno</span>
                         @endif
                     </dd>
                 </div>
@@ -69,9 +200,34 @@
                     <dt class="font-medium text-gray-900 dark:text-gray-100">Zimní pneu</dt>
                     <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-200">
                         @if($vehicle->wpneu)
-                            {{ $vehicle->wpneu }}
+                            <div class="flex items-center gap-2">
+                                @php
+                                    // Calculate seasons: current year - tire year + 1
+                                    $currentYear = now()->year;
+                                    $seasons = $currentYear - $vehicle->wpneu + 1;
+                                @endphp
+                                <span>{{ $vehicle->wpneu }}</span>
+                                @php
+                                    $isGreen = $seasons >= 0 && $seasons <= 5;
+                                    $isYellow = $seasons > 5 && $seasons <= 7;
+                                    $isRed = $seasons >= 8;
+                                @endphp
+                                @if($isGreen)
+                                    <span class="badge badge-green">
+                                        {{ $seasons }}. sezóna
+                                    </span>
+                                @elseif($isYellow)
+                                    <span class="badge badge-yellow">
+                                        {{ $seasons }}. sezóna
+                                    </span>
+                                @else
+                                    <span class="badge badge-red">
+                                        {{ $seasons }}. sezóna
+                                    </span>
+                                @endif
+                            </div>
                         @else
-                            <x-placeholder :text="'Nevyplněno'" :height="'h-[75px]'" />
+                            <span class="text-sm text-gray-400 dark:text-gray-500 italic">Nevyplněno</span>
                         @endif
                     </dd>
                 </div>

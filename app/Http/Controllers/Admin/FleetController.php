@@ -126,7 +126,7 @@ class FleetController extends Controller
             $vehicle->update(['vtp' => route('vtp', compact('filename'))]);
         }
 
-        return to_route('admin.fleet.show', ['vehicle' => $id])->with('success', 'Vozidlo bylo úspěšně aktualizováno.');
+        return to_route('admin.fleet.show', ['fleet' => $id])->with('success', 'Vozidlo bylo úspěšně aktualizováno.');
     }
 
     public function destroy(string $id): RedirectResponse

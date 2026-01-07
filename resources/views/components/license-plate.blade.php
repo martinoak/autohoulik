@@ -35,7 +35,7 @@
     }
 @endphp
 
-<div class="inline-flex items-center justify-center {{ $classes['container'] }} bg-white border-2 border-black rounded-sm shadow-lg font-mono font-black tracking-wider relative overflow-hidden">
+<div class="flex items-center justify-center {{ $classes['container'] }} bg-white border-2 border-black rounded-sm shadow-lg font-mono font-black tracking-wider relative overflow-hidden">
     <!-- EU Flag Section -->
     <div class="{{ $classes['flag'] }} bg-blue-600 flex flex-col items-center justify-around text-yellow-400">
         <!-- Golden Circle -->

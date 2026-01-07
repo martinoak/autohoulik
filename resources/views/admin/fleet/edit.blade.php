@@ -3,6 +3,7 @@
 @section('content')
     <form method="post" action="{{ route('admin.fleet.update', ['fleet' => $vehicle->id]) }}" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
 
         <input type="hidden" name="api-token" value="{{ auth()->user()->api_token }}">
 
